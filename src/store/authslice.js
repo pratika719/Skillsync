@@ -1,20 +1,32 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { login, logout, getCurrentUser } from "../features/auth/authservices";
+import { signup } from "../features/auth/authservices";
+import toast from "react-hot-toast";
 
-
-export const loginUser=createAsyncThunk(
-    "auth/loginUser",
-    async({email,password})=>{
-        return await login(email,password);
-
+export const loginUser = createAsyncThunk(
+  "auth/loginUser",
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const res = await login(email, password);
+      toast.success("Login successful ✅");
+      console.log("login res:",res)
+      return {
+  id: res.$id,
+  email: res.email,
+};
+    } catch (err) {
+      toast.error(err.message || "Login failed ❌");
+      return rejectWithValue(err.message);
     }
-)
+  }
+);
 
 export const fetchUser = createAsyncThunk(
-    "auth/fetchUser",
-    async () => {
-        return await getCurrentUser();
-    }
+  "auth/fetchUser",
+  async () => {
+    const user = await getCurrentUser();
+    return user
+  }
 );
 
 
@@ -24,6 +36,26 @@ export const logoutUser = createAsyncThunk(
         await logout();
     }
 );
+export const signupUser = createAsyncThunk(
+  "auth/signupUser",
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const res = await signup(email, password);
+
+      toast.success("Signup successful 🎉");
+
+      return {
+        id: res.$id,
+        email: res.email,
+      };
+
+    } catch (err) {
+      toast.error(err.message || "Signup failed ❌");
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
 
 const authSlice=createSlice({
     name:"auth",
@@ -34,8 +66,12 @@ const authSlice=createSlice({
     reducers:{},
     extraReducers:(builder)=>{
         builder
-        .addCase(fetchUser.pending,(state)=>{
+        .addCase(fetchUser.pending,(state,action)=>{
             state.loading=true
+        })
+          .addCase(fetchUser.rejected,(state,action)=>{
+            state.loading=false
+            state.error = action.error.message;
         })
         .addCase(fetchUser.fulfilled, (state, action) => {
                 state.user = action.payload;

@@ -1,8 +1,11 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Sidebar from "./components/layout/Sidebar";
-
+import { account } from "./appwrite/config.js";
+import { useEffect } from "react";
 function App() {
+  
+
   return (
     <div className="flex h-screen bg-gray-950 text-gray-100">
       {/* Sidebar */}

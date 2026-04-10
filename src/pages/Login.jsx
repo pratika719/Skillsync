@@ -3,18 +3,26 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "../store/authslice";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import { NavLink } from "react-router-dom";
+import toast from "react-hot-toast";
 function Login() {
   const dispatch= useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState(""); 
 
-  const onSubmit =  (e) => {
-    e.preventDefault(); 
-   dispatch(loginUser({ email, password }))
+ const onSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    await dispatch(loginUser({ email, password })).unwrap();
+
+    toast.success("Login successful 🚀");
     navigate("/");
-  };
+  } catch (err) {
+    toast.error("Login failed ❌");
+  }
+};
 
  return (
         <div className="flex h-screen justify-center items-center">
@@ -41,6 +49,7 @@ function Login() {
                     Login
                 </button>
             </form>
+<NavLink to="/signup" className="mt-4 text-blue-500">Don't have an account? Signup</NavLink>
         </div>
     );
 }

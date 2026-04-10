@@ -1,29 +1,43 @@
 import { account } from "../../appwrite/config";
 
-// 🔐 SIGNUP
 export const signup = async (email, password) => {
-    return await account.create(
-        "unique()", // userId
-        email,
-        password
-    );
+    try {
+        const res = await account.create(
+            "unique()",
+            email,
+            password
+        );
+
+        console.log("SIGNUP SUCCESS:", res);
+        return res;
+
+    } catch (error) {
+        console.error("SIGNUP ERROR:", error);
+        throw error;
+    }
 };
 
 // 🔐 LOGIN
 export const login = async (email, password) => {
-    return await account.createEmailPasswordSession(email, password);
+    await account.createEmailPasswordSession(email, password);
+
+    const user = await account.get();
+    console.log("USER:", user);
+
+    return user;
 };
 
 // 🔐 LOGOUT
 export const logout = async () => {
     return await account.deleteSession("current");
 };
-
-// 🔐 GET CURRENT USER (CRITICAL FOR PERSISTENCE)
 export const getCurrentUser = async () => {
-    try {
-        return await account.get();
-    } catch (error) {
-        return null;
-    }
+  const user = await account.get();
+
+  // ✅ Return ONLY plain data
+  return {
+    id: user.$id,
+    name: user.name,
+    email: user.email,
+  };
 };

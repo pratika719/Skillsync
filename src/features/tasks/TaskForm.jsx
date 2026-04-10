@@ -1,29 +1,48 @@
 import { useState } from "react";
-import { addTask } from "../../services/taskservices";
+import { useDispatch, useSelector } from "react-redux";
+import { addTask } from "../../store/taskslice";
+import toast from "react-hot-toast";
 
-function TaskForm({ onAdd }) {
-    const [title, setTitle] = useState("");
+function TaskForm() {
+  const [text, setText] = useState("");
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!title) return;
+  const handleAdd = () => {
+    if (!text.trim()) {
+      toast.error("Task cannot be empty ❌");
+      return;
+    }
+    console.log("Adding task for user:", user); // Debugging log
 
-        const newTask = await addTask(title);
-        onAdd(newTask);
-        setTitle("");
-    };
-
-    return (
-        <form onSubmit={handleSubmit} className="mb-4 flex gap-2">
-            <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Add a task..."
-                className="flex-1 p-2 rounded bg-gray-800"
-            />
-            <button className="bg-blue-500 px-4 rounded">Add</button>
-        </form>
+    dispatch(
+      addTask({
+        title: text,
+        completed: false,
+        userId: user?.id, // ✅ FIXED: was user?.id
+      })
     );
+
+    toast.success("Task added ✅");
+    setText("");
+  };
+
+  return (
+    <div className="flex gap-2 mb-4">
+      <input
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Enter task..."
+        className="border p-2 rounded w-full"
+      />
+      <button
+        onClick={handleAdd}
+        className="px-4 bg-green-500 text-white rounded"
+      >
+        Add
+      </button>
+    </div>
+  );
 }
 
 export default TaskForm;

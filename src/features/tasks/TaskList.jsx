@@ -1,54 +1,34 @@
-import { useEffect, useState } from "react";
-import { getTasks } from "../../services/taskservices";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTasks } from "../../store/taskslice";
 import TaskCard from "./TaskCard";
 
 function TaskList() {
-    const [tasks, setTasks] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { items: tasks, loading } = useSelector((state) => state.tasks);
+  const user = useSelector((state) => state.auth.user);
 
-    // 🔥 Fetch tasks (reusable)
-    const fetchTasks = async () => {
-        try {
-            setLoading(true);
-            const data = await getTasks();
-            setTasks(data);
-        } catch (error) {
-            console.error("Error fetching tasks:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // 🔥 Run once on mount
-    useEffect(() => {
-        fetchTasks();
-    }, []);
-
-    // 🔥 Called after update/delete
-    const handleRefresh = async () => {
-        await fetchTasks();
-    };
-
-    if (loading) {
-        return <p className="text-gray-500">Loading tasks...</p>;
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchTasks(user.id)); // ✅ FIXED: was user.id
     }
+  }, [user, dispatch]);
 
-    if (tasks.length === 0) {
-        return <p className="text-gray-400">No tasks found</p>;
-    }
+  if (loading) {
+    return <p className="text-gray-500">Loading tasks...</p>;
+  }
 
-    return (
-        <div className="space-y-3">
-            {tasks.map((task) => (
-                <TaskCard
-                    key={task.id || task.$id} // supports both mock + Appwrite
-                    task={task}
-                    onUpdate={handleRefresh}
-                    onDelete={handleRefresh}
-                />
-            ))}
-        </div>
-    );
+  if (!tasks || tasks.length === 0) {
+    return <p className="text-gray-400">No tasks found</p>;
+  }
+
+  return (
+    <div className="space-y-3">
+      {tasks.map((task) => (
+        <TaskCard key={task.id} task={task} />
+      ))}
+    </div>
+  );
 }
 
 export default TaskList;

@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
 import Skills from "./pages/Skills";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function AppWrapper() {
     const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function AppWrapper() {
 
             {/* Public route */}
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
 
         </Routes>
     );
