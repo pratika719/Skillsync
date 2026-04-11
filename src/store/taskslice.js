@@ -12,11 +12,12 @@ export const fetchTasks = createAsyncThunk(
   async (userId, { rejectWithValue }) => {
     try {
       const docs = await getTasks(userId);
-      return docs.map((doc) => ({      // ✅ map $id → id
-        id: doc.$id,
-        title: doc.title,
-        completed: doc.completed,
-      }));
+     return docs.map((doc) => ({
+  id: doc.$id,
+  title: doc.title,
+  completed: doc.completed,
+  skillId: doc.skillId || null, // ✅ add this
+}));
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -30,10 +31,11 @@ export const addTask = createAsyncThunk(
     try {
       const res = await createTask(taskData);
       return {
-        id: res.$id,
-        title: res.title,
-        completed: res.completed,
-      };
+  id: res.$id,
+  title: res.title,
+  completed: res.completed,
+  skillId: res.skillId || null, // ✅ add this
+};
     } catch (error) {
       return rejectWithValue(error.message);
     }
