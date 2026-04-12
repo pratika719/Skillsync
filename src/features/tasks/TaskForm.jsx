@@ -1,34 +1,22 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addTask } from "../../store/taskslice";
+import { useTasks } from "../../hooks/useTasks";
 import toast from "react-hot-toast";
-import { selectAllSkills, selectUser } from "../../store/selectors";
+
 
 function TaskForm() {
   const [text, setText] = useState("");
-  const [skillId, setSkillId] = useState(""); // ✅ new
-  const dispatch = useDispatch();
-  const user = useSelector(selectUser);
-  const skills = useSelector(selectAllSkills) // ✅ new
+  const [skillId, setSkillId] = useState("");
+  const { createTask, skills } = useTasks();
+  
 
   const handleAdd = async () => {
-    if (!text.trim()) {
-      toast.error("Task cannot be empty ❌");
-      return;
-    }
+    if (!text.trim()) { toast.error("Task cannot be empty ❌"); return; }
     try {
-      await dispatch(
-        addTask({
-          title: text,
-          completed: false,
-          userId: user?.id,
-          skillId: skillId || null, // ✅ new
-        })
-      ).unwrap();
+      await createTask(text, skillId || null);
       toast.success("Task added ✅");
       setText("");
       setSkillId("");
-    } catch (err) {
+    } catch {
       toast.error("Failed to add task ❌");
     }
   };
@@ -41,7 +29,6 @@ function TaskForm() {
         placeholder="Enter task..."
         className="border p-2 rounded w-full"
       />
-      {/* ✅ skill dropdown */}
       <select
         value={skillId}
         onChange={(e) => setSkillId(e.target.value)}
@@ -49,15 +36,10 @@ function TaskForm() {
       >
         <option value="">No skill</option>
         {skills.map((skill) => (
-          <option key={skill.id} value={skill.id}>
-            {skill.title}
-          </option>
+          <option key={skill.id} value={skill.id}>{skill.title}</option>
         ))}
       </select>
-      <button
-        onClick={handleAdd}
-        className="px-4 bg-green-500 text-white rounded"
-      >
+      <button onClick={handleAdd} className="px-4 bg-green-500 text-white rounded">
         Add
       </button>
     </div>

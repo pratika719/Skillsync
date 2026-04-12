@@ -1,8 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
-import { deleteSkillAsync, editSkillAsync } from "../../store/skillslice";
+
 import toast from "react-hot-toast";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { selectTaskBySkill } from "../../store/selectors";
+import { useSkills } from "../../hooks/useSkills";
+import { useSelector } from "react-redux";
 const STATUS_OPTIONS = ["not_started", "in_progress", "completed"];
 
 const STATUS_STYLES = {
@@ -12,29 +13,26 @@ const STATUS_STYLES = {
 };
 
 const SkillCard = memo(function SkillCard({ skill }) {
-  const dispatch = useDispatch();
-
-  // tasks tagged to this skill
+  const { removeSkill, updateSkill } = useSkills();
   const linkedTasks = useSelector(selectTaskBySkill(skill.id));
+
   const handleDelete = async () => {
     try {
-      await dispatch(deleteSkillAsync(skill.id)).unwrap();
+      await removeSkill(skill.id);
       toast.success("Skill deleted 🗑️");
     } catch (err) {
       toast.error("Failed to delete skill ❌");
     }
   };
 
-  const handleStatusChange = async (e) => {
+  const handleStatusChange = useCallback(async (e) => {
     try {
-      await dispatch(
-        editSkillAsync({ id: skill.id, data: { status: e.target.value } })
-      ).unwrap();
+      await updateSkill(skill.id, { status: e.target.value });
       toast.success("Status updated ✅");
     } catch (err) {
       toast.error("Failed to update status ❌");
     }
-  };
+  }, [skill.id]);
 
   return (
     <div className="p-4 bg-white shadow rounded space-y-2">

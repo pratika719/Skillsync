@@ -1,19 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchSkill } from "../../store/skillslice";
 import SkillCard from "./SkillCard";
 import { useDebounce } from "../../hooks/useDebounce";
+import { useSkills } from "../../hooks/useSkills";
 function SkillList() {
-  const dispatch = useDispatch();
-  const { items: skills, loading } = useSelector((state) => state.skills);
-  const user = useSelector((state) => state.auth.user);
-const [search, setSearch]= useState("");
-const debouncedSearch = useDebounce(search, 300);
+  const { skills, loading } = useSkills();
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 300);
   const [statusFilter, setStatusFilter] = useState("all");
 
-  useEffect(() => {
-    if (user) dispatch(fetchSkill(user.id));
-  }, [user, dispatch]);
+
 
   const filtered = useMemo(() => skills
     .filter((s) =>
@@ -22,7 +17,7 @@ const debouncedSearch = useDebounce(search, 300);
     .filter((s) => {
       if (statusFilter === "all") return true;
       return s.status === statusFilter;
-    }), [debouncedSearch, statusFilter,skills]);
+    }), [debouncedSearch, statusFilter, skills]);
 
   if (loading) return <p className="text-gray-500">Loading skills...</p>;
 

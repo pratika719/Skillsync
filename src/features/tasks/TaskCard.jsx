@@ -1,47 +1,43 @@
-import { useDispatch } from "react-redux";
-import {
-  toggleTaskAsync,
-  deleteTaskAsync,
-  editTaskAsync,
-} from "../../store/taskslice";
+
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
-import { memo,useMemo } from "react";
+import { memo, useMemo } from "react";
 import { useDebounce } from "../../hooks/useDebounce";
+import { useTasks } from "../../hooks/useTasks";
 
 const TaskCard = memo(function TaskCard({ task }) {
-  const dispatch = useDispatch();
+  const { toggleTask, deleteTask, editTask } = useTasks();
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(task.title);
 
-const handleDelete = useCallback(async () => {
-  try {
-    await dispatch(deleteTaskAsync(task.id)).unwrap(); // ✅ waits for result
-    toast.success("Task deleted 🗑️");
-  } catch (err) {
-    toast.error("Failed to delete task ❌");
-    console.error("Delete error:", err); // Debug log
-  }
-}, [dispatch, task.id]);
-const handleEdit = async () => {
-  if (!newTitle.trim()) { toast.error("Title cannot be empty ❌"); return; }
-  try {
-    await dispatch(editTaskAsync({ id: task.id, data: { title: newTitle } })).unwrap();
-    toast.success("Task updated ✏️");
-    setIsEditing(false);
-  } catch { toast.error("Failed to update task ❌"); }
-};
+  const handleDelete = useCallback(async () => {
+    try {
+      await deleteTask(task.id); // ✅ waits for result
+      toast.success("Task deleted 🗑️");
+    } catch (err) {
+      toast.error("Failed to delete task ❌");
+      console.error("Delete error:", err); // Debug log
+    }
+  }, [deleteTask, task.id]);
+  const handleEdit = async () => {
+    if (!newTitle.trim()) { toast.error("Title cannot be empty ❌"); return; }
+    try {
+      await editTask(task.id, { title: newTitle });
+      toast.success("Task updated ✏️");
+      setIsEditing(false);
+    } catch { toast.error("Failed to update task ❌"); }
+  };
 
-const handleToggle = useCallback(async () => {
-  try {
-    await dispatch(toggleTaskAsync(task)).unwrap();
-    toast.success("Task updated ✅");
-  } catch { toast.error("Failed to update task ❌"); }
-}, [dispatch, task]);
+  const handleToggle = useCallback(async () => {
+    try {
+      await toggleTask(task);
+      toast.success("Task updated ✅");
+    } catch { toast.error("Failed to update task ❌"); }
+  }, [toggleTask, task]);
 
   return (
     <div className="p-4 bg-white shadow rounded flex justify-between items-center">
-      
+
       {/* LEFT SIDE */}
       <div className="flex-1">
         {isEditing ? (
@@ -90,11 +86,11 @@ const handleToggle = useCallback(async () => {
 
         {/* Delete */}
         <button
-  onClick={handleDelete}
-  className="px-2 py-1 bg-red-500 text-white rounded"
->
-  Delete
-</button>
+          onClick={handleDelete}
+          className="px-2 py-1 bg-red-500 text-white rounded"
+        >
+          Delete
+        </button>
       </div>
     </div>
   );

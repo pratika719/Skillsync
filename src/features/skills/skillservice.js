@@ -1,29 +1,29 @@
 import { databases } from "../../appwrite/config";
-import { Query,ID } from "appwrite";
+import { Query, ID } from "appwrite";
 
 const DATABASE_ID = import.meta.env.VITE_APPWRITE_DATABASE_ID;
-const COLLECTION_ID = import.meta.env.VITE_APPWRITE_SKILLS_COLLECTION_ID; 
+const COLLECTION_ID = import.meta.env.VITE_APPWRITE_SKILLS_COLLECTION_ID;
 
-export const createSkill=async (skilldata)=>{
-    const res=await databases.createDocument(
-        DATABASE_ID,
-        COLLECTION_ID,
-        ID.unique(),
-        skilldata
+export const createSkill = async (skilldata) => {
+  const res = await databases.createDocument(
+    DATABASE_ID,
+    COLLECTION_ID,
+    ID.unique(),
+    skilldata
 
-    );
-    return res
+  );
+  return res
 };
 
-export const getSkills = async (skillId)=>{
-    const res=await databases.listDocuments(
-        DATABASE_ID,
+export const getSkills = async (userId) => {
+  const res = await databases.listDocuments(
+    DATABASE_ID,
     COLLECTION_ID,
     [Query.equal("userId", userId)]
   );
   return res.documents;
 
-    
+
 }
 
 

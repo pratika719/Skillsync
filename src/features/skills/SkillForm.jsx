@@ -1,29 +1,18 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addSkill } from "../../store/skillslice";
+import { useSkills } from "../../hooks/useSkills";
 import toast from "react-hot-toast";
 
 function SkillForm() {
   const [title, setTitle] = useState("");
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
+  const { createSkill } = useSkills();
 
   const handleAdd = async () => {
-    if (!title.trim()) {
-      toast.error("Skill name cannot be empty ❌");
-      return;
-    }
+    if (!title.trim()) { toast.error("Skill name cannot be empty ❌"); return; }
     try {
-      await dispatch(
-        addSkill({
-          title,
-          status: "not_started",
-          userId: user?.id,
-        })
-      ).unwrap();
+      await createSkill(title);
       toast.success("Skill added ✅");
       setTitle("");
-    } catch (err) {
+    } catch {
       toast.error("Failed to add skill ❌");
     }
   };
@@ -36,10 +25,7 @@ function SkillForm() {
         placeholder="Enter skill name..."
         className="border p-2 rounded w-full"
       />
-      <button
-        onClick={handleAdd}
-        className="px-4 bg-purple-500 text-white rounded"
-      >
+      <button onClick={handleAdd} className="px-4 bg-purple-500 text-white rounded">
         Add Skill
       </button>
     </div>
