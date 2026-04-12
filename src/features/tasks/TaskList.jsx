@@ -2,36 +2,42 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTasks } from "../../store/taskslice";
 import TaskCard from "./TaskCard";
+import { selectAllSkills, selectUser } from "../../store/selectors";
+import { useDebounce } from "../../hooks/useDebounce";
+import { useMemo } from "react";
 
 function TaskList() {
   const dispatch = useDispatch();
   const { items: tasks, loading } = useSelector((state) => state.tasks);
-  const skills = useSelector((state) => state.skills.items);
-  const user = useSelector((state) => state.auth.user);
+  const skills = useSelector(selectAllSkills);
+  const user = useSelector(selectUser);
 
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 300); // Custom hook to debounce search input
+  
   const [statusFilter, setStatusFilter] = useState("all");
   const [skillFilter, setSkillFilter] = useState("all");
 
   useEffect(() => {
-    if (user) dispatch(fetchTasks(user.id));
-  }, [user, dispatch]);
+    if (user && tasks.length===0) dispatch(fetchTasks(user.id));
+  }, [user]);
 
-  const filtered = tasks
-    .filter((t) =>
-      t.title.toLowerCase().includes(search.toLowerCase())
-    )
-    .filter((t) => {
-      if (statusFilter === "all") return true;
-      if (statusFilter === "completed") return t.completed;
-      if (statusFilter === "pending") return !t.completed;
-    })
-    .filter((t) => {
-      if (skillFilter === "all") return true;
-      if (skillFilter === "none") return !t.skillId;
-      return t.skillId === skillFilter;
-    });
-
+ const filtered = useMemo(() => tasks
+  .filter((t) =>
+    t.title.toLowerCase().includes(debouncedSearch.toLowerCase())
+  )
+  .filter((t) => {
+    if (statusFilter === "all") return true;
+    if (statusFilter === "completed") return t.completed;
+    if (statusFilter === "pending") return !t.completed;
+  })
+  .filter((t) => {
+    if (skillFilter === "all") return true;
+    if (skillFilter === "none") return !t.skillId;
+    return t.skillId === skillFilter;
+  }),
+  [debouncedSearch, statusFilter, skillFilter,tasks] // ✅ deps outside, second arg to useMemo
+);
   if (loading) return <p className="text-gray-500">Loading tasks...</p>;
 
   return (

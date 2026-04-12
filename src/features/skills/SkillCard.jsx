@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { deleteSkillAsync, editSkillAsync } from "../../store/skillslice";
 import toast from "react-hot-toast";
-
+import { memo } from "react";
+import { selectTaskBySkill } from "../../store/selectors";
 const STATUS_OPTIONS = ["not_started", "in_progress", "completed"];
 
 const STATUS_STYLES = {
@@ -10,14 +11,11 @@ const STATUS_STYLES = {
   completed: "bg-green-100 text-green-700",
 };
 
-function SkillCard({ skill }) {
+const SkillCard = memo(function SkillCard({ skill }) {
   const dispatch = useDispatch();
 
   // tasks tagged to this skill
-  const linkedTasks = useSelector((state) =>
-    state.tasks.items.filter((t) => t.skillId === skill.id)
-  );
-
+  const linkedTasks = useSelector(selectTaskBySkill(skill.id));
   const handleDelete = async () => {
     try {
       await dispatch(deleteSkillAsync(skill.id)).unwrap();
@@ -86,6 +84,6 @@ function SkillCard({ skill }) {
       </div>
     </div>
   );
-}
+})
 
 export default SkillCard;

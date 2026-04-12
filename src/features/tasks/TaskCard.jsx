@@ -4,15 +4,17 @@ import {
   deleteTaskAsync,
   editTaskAsync,
 } from "../../store/taskslice";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
+import { memo,useMemo } from "react";
+import { useDebounce } from "../../hooks/useDebounce";
 
-function TaskCard({ task }) {
+const TaskCard = memo(function TaskCard({ task }) {
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(task.title);
 
-const handleDelete = async () => {
+const handleDelete = useCallback(async () => {
   try {
     await dispatch(deleteTaskAsync(task.id)).unwrap(); // ✅ waits for result
     toast.success("Task deleted 🗑️");
@@ -20,18 +22,22 @@ const handleDelete = async () => {
     toast.error("Failed to delete task ❌");
     console.error("Delete error:", err); // Debug log
   }
-};
-
-  const handleEdit = () => {
-    if (!newTitle.trim()) {
-      toast.error("Title cannot be empty ❌");
-      return;
-    }
-
-    dispatch(editTaskAsync({ id: task.id, data: { title: newTitle } }));
+}, [dispatch, task.id]);
+const handleEdit = async () => {
+  if (!newTitle.trim()) { toast.error("Title cannot be empty ❌"); return; }
+  try {
+    await dispatch(editTaskAsync({ id: task.id, data: { title: newTitle } })).unwrap();
     toast.success("Task updated ✏️");
     setIsEditing(false);
-  };
+  } catch { toast.error("Failed to update task ❌"); }
+};
+
+const handleToggle = useCallback(async () => {
+  try {
+    await dispatch(toggleTaskAsync(task)).unwrap();
+    toast.success("Task updated ✅");
+  } catch { toast.error("Failed to update task ❌"); }
+}, [dispatch, task]);
 
   return (
     <div className="p-4 bg-white shadow rounded flex justify-between items-center">
@@ -92,6 +98,6 @@ const handleDelete = async () => {
       </div>
     </div>
   );
-}
+});
 
 export default TaskCard;

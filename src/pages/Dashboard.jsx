@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
+import { memo, useMemo } from "react";
 
-function StatCard({ label, value, sub }) {
+const StatCard = memo(function StatCard({ label, value, sub }) {
   return (
     <div className="bg-white rounded-xl shadow p-5 flex flex-col gap-1">
       <p className="text-sm text-gray-400">{label}</p>
@@ -8,7 +9,7 @@ function StatCard({ label, value, sub }) {
       {sub && <p className="text-xs text-gray-400">{sub}</p>}
     </div>
   );
-}
+});
 
 function Dashboard() {
   const tasks = useSelector((state) => state.tasks.items);
@@ -16,12 +17,12 @@ function Dashboard() {
   const user = useSelector((state) => state.auth.user);
 
   // ── Task stats ──────────────────────────────────────────
-  const totalTasks = tasks.length;
-  const completedTasks = tasks.filter((t) => t.completed).length;
-  const pendingTasks = totalTasks - completedTasks;
+  const totalTasks = useMemo(() => tasks.length, [tasks]);
+  const completedTasks = useMemo(() => tasks.filter((t) => t.completed).length, [tasks]);
+  const pendingTasks = useMemo(() => totalTasks - completedTasks, [totalTasks, completedTasks]);
 
   // ── Tasks per skill breakdown ────────────────────────────
-  const skillBreakdown = skills.map((skill) => {
+  const skillBreakdown = useMemo(() => skills.map((skill) => {
     const skillTasks = tasks.filter((t) => t.skillId === skill.id);
     const completed = skillTasks.filter((t) => t.completed).length;
     return {
@@ -30,10 +31,10 @@ function Dashboard() {
       completed,
       pending: skillTasks.length - completed,
     };
-  });
+  }), [skills, tasks]);
 
-  // ── Recent activity (last 5 tasks) ──────────────────────
-  const recentTasks = [...tasks].slice(-5).reverse();
+ 
+  const recentTasks = useMemo(() => [...tasks].slice(-5).reverse(), [tasks]);
 
   return (
     <div className="p-6 space-y-8">
