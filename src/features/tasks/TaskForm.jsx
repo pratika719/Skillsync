@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTask } from "../../store/taskslice";
 import toast from "react-hot-toast";
+import { selectAllSkills, selectUser } from "../../store/selectors";
 
 function TaskForm() {
   const [text, setText] = useState("");
   const [skillId, setSkillId] = useState(""); // ✅ new
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
-  const skills = useSelector((state) => state.skills.items); // ✅ new
+  const user = useSelector(selectUser);
+  const skills = useSelector(selectAllSkills) // ✅ new
 
   const handleAdd = async () => {
     if (!text.trim()) {

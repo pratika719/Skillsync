@@ -4,11 +4,15 @@ import { fetchUser } from "./store/authslice";
 import ProtectedRoute from "./components/shared/ProtectedRoute";
 import { Routes, Route } from "react-router-dom";
 import App from "./App";
-import Dashboard from "./pages/Dashboard";
-import Tasks from "./pages/Tasks";
-import Skills from "./pages/Skills";
+import { lazy, Suspense } from "react";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+
+const Dashboard=lazy(()=>import("./pages/Dashboard"));
+const Tasks=lazy(()=>import("./pages/Tasks"));
+const Skills=lazy(()=>import("./pages/Skills"));
+
+
 
 function AppWrapper() {
     const dispatch = useDispatch();
@@ -18,7 +22,8 @@ function AppWrapper() {
     }, [dispatch]);
 
     return (
-        <Routes>
+        <Suspense fallback={<p className="p-6 text-gray-400">Loading...</p>}>
+            <Routes>
 
             {/* Protected routes (we'll add protection next if needed) */}
             <Route element={<ProtectedRoute />}>
@@ -28,12 +33,14 @@ function AppWrapper() {
                 <Route path="skills" element={<Skills />} />
             </Route>
             </Route>
+            
 
             {/* Public route */}
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
 
         </Routes>
+         </Suspense>
     );
 }
 
