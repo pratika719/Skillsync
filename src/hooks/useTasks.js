@@ -15,14 +15,16 @@ export function useTasks() {
         if (user) dispatch(fetchTasks(user.id));
     }, [dispatch, user]);
 
-    const createTask = useCallback((title, skillId = null) => 
+    const createTask = useCallback((title, skillId = null) =>
         dispatch(addTask({ title, completed: false, userId: user?.id, skillId: skillId || null })).unwrap()
-    , [dispatch, user])
+        , [dispatch, user])
 
-   const toggleTask = useCallback((task) => dispatch(toggleTaskAsync(task)).unwrap(), [dispatch])
+    const toggleTask = useCallback((task) => dispatch(toggleTaskAsync(task)).unwrap(), [dispatch])
     const removeTask = useCallback((id) => dispatch(deleteTaskAsync(id)).unwrap(), [dispatch])
+    const editTask = useCallback((id, data) => dispatch(editTaskAsync({ id, data })).unwrap(), [dispatch])
 
-    return { tasks, loading, error, loadTasks, createTask, toggleTask, removeTask,loadTasks,skills };
+
+    return { tasks, loading, error, loadTasks, createTask, toggleTask, removeTask, loadTasks, skills, editTask };
 
 
 

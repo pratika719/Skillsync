@@ -6,19 +6,19 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { useTasks } from "../../hooks/useTasks";
 
 const TaskCard = memo(function TaskCard({ task }) {
-  const { toggleTask, deleteTask, editTask } = useTasks();
+  const { toggleTask, removeTask, editTask } = useTasks();
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(task.title);
 
   const handleDelete = useCallback(async () => {
     try {
-      await deleteTask(task.id); // ✅ waits for result
+      await removeTask(task.id); // ✅ waits for result
       toast.success("Task deleted 🗑️");
     } catch (err) {
       toast.error("Failed to delete task ❌");
       console.error("Delete error:", err); // Debug log
     }
-  }, [deleteTask, task.id]);
+  }, [removeTask, task.id]);
   const handleEdit = async () => {
     if (!newTitle.trim()) { toast.error("Title cannot be empty ❌"); return; }
     try {
@@ -58,10 +58,7 @@ const TaskCard = memo(function TaskCard({ task }) {
 
         {/* Toggle */}
         <button
-          onClick={() => {
-            dispatch(toggleTaskAsync(task)); // ✅ FIXED
-            toast.success("Task updated ✅");
-          }}
+          onClick={handleToggle}
           className="px-2 py-1 bg-blue-500 text-white rounded"
         >
           {task.completed ? "Undo" : "Done"}
