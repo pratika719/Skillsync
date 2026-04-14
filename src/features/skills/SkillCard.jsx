@@ -7,9 +7,9 @@ import { useSelector } from "react-redux";
 const STATUS_OPTIONS = ["not_started", "in_progress", "completed"];
 
 const STATUS_STYLES = {
-  not_started: "bg-gray-100 text-gray-600",
-  in_progress: "bg-yellow-100 text-yellow-700",
-  completed: "bg-green-100 text-green-700",
+  not_started: "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400",
+  in_progress: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
+  completed: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
 };
 
 const SkillCard = memo(function SkillCard({ skill }) {
@@ -35,9 +35,9 @@ const SkillCard = memo(function SkillCard({ skill }) {
   }, [skill.id]);
 
   return (
-    <div className="p-4 bg-white shadow rounded space-y-2">
+    <div className="p-4 bg-white dark:bg-gray-800 shadow rounded space-y-2">
       <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-lg">{skill.title}</h3>
+        <h3 className="font-semibold text-lg text-gray-800 dark:text-gray-100">{skill.title}</h3>
         <div className="flex gap-2 items-center">
           <select
             value={skill.status}
@@ -65,13 +65,13 @@ const SkillCard = memo(function SkillCard({ skill }) {
           Linked tasks ({linkedTasks.length})
         </p>
         {linkedTasks.length === 0 ? (
-          <p className="text-xs text-gray-300">No tasks linked to this skill</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500">No tasks linked to this skill</p>
         ) : (
           <ul className="space-y-1">
             {linkedTasks.map((task) => (
               <li
                 key={task.id}
-                className="text-sm text-gray-600 flex items-center gap-2"
+                className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2"
               >
                 <span>{task.completed ? "✅" : "⬜"}</span>
                 <span>{task.title}</span>

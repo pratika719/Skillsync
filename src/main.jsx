@@ -6,12 +6,17 @@ import { Toaster } from "react-hot-toast";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import AppWrapper from "./AppWrapper"; // 🔥 IMPORT
-
+import ErrorBoundary from "./components/shared/ErrorBoundary";
+import { ThemeProvider } from "./context/ThemeContext";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
+    <ThemeProvider>
       <Toaster position="top-right" />
-    <BrowserRouter>
-      <AppWrapper /> {/* 🔥 USE WRAPPER */}
-    </BrowserRouter>
+      <ErrorBoundary>
+        <BrowserRouter>
+          <AppWrapper /> {/* 🔥 USE WRAPPER */}
+        </BrowserRouter>
+      </ErrorBoundary>
+    </ThemeProvider>
   </Provider>
 );

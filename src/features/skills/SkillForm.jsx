@@ -23,7 +23,7 @@ function SkillForm() {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Enter skill name..."
-        className="border p-2 rounded w-full"
+        className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded w-full placeholder-gray-400"
       />
       <button onClick={handleAdd} className="px-4 bg-purple-500 text-white rounded">
         Add Skill

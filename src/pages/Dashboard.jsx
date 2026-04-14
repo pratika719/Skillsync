@@ -3,10 +3,10 @@ import { memo, useMemo } from "react";
 
 const StatCard = memo(function StatCard({ label, value, sub }) {
   return (
-    <div className="bg-white rounded-xl shadow p-5 flex flex-col gap-1">
-      <p className="text-sm text-gray-400">{label}</p>
-      <p className="text-3xl font-bold text-gray-800">{value}</p>
-      {sub && <p className="text-xs text-gray-400">{sub}</p>}
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-5 flex flex-col gap-1">
+      <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
+      <p className="text-3xl font-bold text-gray-800 dark:text-gray-100">{value}</p>
+      {sub && <p className="text-xs text-gray-500 dark:text-gray-400">{sub}</p>}
     </div>
   );
 });
@@ -41,10 +41,10 @@ function Dashboard() {
 
       {/* Welcome */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-800">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
           Welcome back, {user?.email} 👋
         </h1>
-        <p className="text-sm text-gray-400 mt-1">
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
           Here's what's going on with your tasks and skills.
         </p>
       </div>
@@ -85,23 +85,23 @@ function Dashboard() {
             {skillBreakdown.map((skill) => (
               <div
                 key={skill.id}
-                className="bg-white rounded-xl shadow p-5 space-y-2"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow p-5 space-y-2"
               >
                 <div className="flex justify-between items-center">
-                  <p className="font-semibold text-gray-700">{skill.title}</p>
+                  <p className="font-semibold text-gray-700 dark:text-gray-200">{skill.title}</p>
                   <span
                     className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                       skill.status === "completed"
-                        ? "bg-green-100 text-green-700"
+                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
                         : skill.status === "in_progress"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : "bg-gray-100 text-gray-500"
+                        ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                        : "bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400"
                     }`}
                   >
                     {skill.status.replace("_", " ")}
                   </span>
                 </div>
-                <div className="flex gap-4 text-sm text-gray-500">
+                <div className="flex gap-4 text-sm text-gray-500 dark:text-gray-400">
                   <span>🗂 Total: {skill.total}</span>
                   <span>✅ Done: {skill.completed}</span>
                   <span>⏳ Pending: {skill.pending}</span>
@@ -120,7 +120,7 @@ function Dashboard() {
         {recentTasks.length === 0 ? (
           <p className="text-gray-400 text-sm">No tasks yet.</p>
         ) : (
-          <div className="bg-white rounded-xl shadow divide-y">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow divide-y divide-gray-100 dark:divide-gray-700">
             {recentTasks.map((task) => {
               const skill = skills.find((s) => s.id === task.skillId);
               return (
@@ -130,11 +130,11 @@ function Dashboard() {
                 >
                   <div className="flex items-center gap-3">
                     <span>{task.completed ? "✅" : "⬜"}</span>
-                    <span className="text-sm text-gray-700">{task.title}</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">{task.title}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     {skill && (
-                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">
+                      <span className="text-xs bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 px-2 py-0.5 rounded-full">
                         {skill.title}
                       </span>
                     )}

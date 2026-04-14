@@ -36,7 +36,7 @@ const TaskCard = memo(function TaskCard({ task }) {
   }, [toggleTask, task]);
 
   return (
-    <div className="p-4 bg-white shadow rounded flex justify-between items-center">
+    <div className="p-4 bg-white dark:bg-gray-800 shadow rounded flex justify-between items-center">
 
       {/* LEFT SIDE */}
       <div className="flex-1">
@@ -44,10 +44,10 @@ const TaskCard = memo(function TaskCard({ task }) {
           <input
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
-            className="border p-1 rounded w-full"
+            className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-1 rounded w-full"
           />
         ) : (
-          <h3 className="font-semibold">
+          <h3 className="font-semibold text-gray-800 dark:text-gray-100">
             {task.completed ? "✅ " : ""} {task.title}
           </h3>
         )}

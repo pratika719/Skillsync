@@ -27,12 +27,12 @@ function TaskForm() {
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Enter task..."
-        className="border p-2 rounded w-full"
+        className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded w-full placeholder-gray-400"
       />
       <select
         value={skillId}
         onChange={(e) => setSkillId(e.target.value)}
-        className="border p-2 rounded"
+        className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded"
       >
         <option value="">No skill</option>
         {skills.map((skill) => (
