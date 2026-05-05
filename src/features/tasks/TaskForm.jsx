@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTasks } from "../../hooks/useTasks";
+import { useTasks } from "./useTasks";
 import toast from "react-hot-toast";
 
 
@@ -7,7 +7,7 @@ function TaskForm() {
   const [text, setText] = useState("");
   const [skillId, setSkillId] = useState("");
   const { createTask, skills } = useTasks();
-  
+
 
   const handleAdd = async () => {
     if (!text.trim()) { toast.error("Task cannot be empty ❌"); return; }

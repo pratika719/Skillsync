@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { login, logout, getCurrentUser } from "../features/auth/authservices";
-import { signup } from "../features/auth/authservices";
+import { login, logout, getCurrentUser, signup } from "./authService";
 import toast from "react-hot-toast";
 
 export const loginUser = createAsyncThunk(
@@ -23,12 +22,11 @@ export const loginUser = createAsyncThunk(
 
 export const fetchUser = createAsyncThunk(
   "auth/fetchUser",
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
       const user = await getCurrentUser();
       return user
     } catch (err) {
-      toast.error(err.message || "Failed to fetch user ❌");
       return rejectWithValue(err.message);
     }
   }

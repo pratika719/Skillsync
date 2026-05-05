@@ -11,17 +11,15 @@ const StatCard = memo(function StatCard({ label, value, sub }) {
   );
 });
 
-function Dashboard() {
+function DashboardPage() {
   const tasks = useSelector((state) => state.tasks.items);
   const skills = useSelector((state) => state.skills.items);
   const user = useSelector((state) => state.auth.user);
 
-  // ── Task stats ──────────────────────────────────────────
   const totalTasks = useMemo(() => tasks.length, [tasks]);
   const completedTasks = useMemo(() => tasks.filter((t) => t.completed).length, [tasks]);
   const pendingTasks = useMemo(() => totalTasks - completedTasks, [totalTasks, completedTasks]);
 
-  // ── Tasks per skill breakdown ────────────────────────────
   const skillBreakdown = useMemo(() => skills.map((skill) => {
     const skillTasks = tasks.filter((t) => t.skillId === skill.id);
     const completed = skillTasks.filter((t) => t.completed).length;
@@ -33,7 +31,6 @@ function Dashboard() {
     };
   }), [skills, tasks]);
 
- 
   const recentTasks = useMemo(() => [...tasks].slice(-5).reverse(), [tasks]);
 
   return (
@@ -157,4 +154,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default DashboardPage;

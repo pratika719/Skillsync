@@ -1,16 +1,16 @@
-import { databases } from "../../appwrite/config";
-import { Query, ID } from "appwrite"; // ✅ Import ID
+import { databases } from "@/lib/appwrite";
+import { Query, ID } from "appwrite";
 
 const DATABASE_ID = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const COLLECTION_ID = import.meta.env.VITE_APPWRITE_TASKS_COLLECTION_ID;
 
 export const createTask = async (taskData) => {
-    console.log("DB_ID:", DATABASE_ID, "COL_ID:", COLLECTION_ID); // Check env vars
-  console.log("taskData:", taskData); // Check userId is not undefined
+    console.log("DB_ID:", DATABASE_ID, "COL_ID:", COLLECTION_ID);
+  console.log("taskData:", taskData);
   const res = await databases.createDocument(
     DATABASE_ID,
     COLLECTION_ID,
-    ID.unique(), // ✅ was: "unique()" (a plain string — invalid)
+    ID.unique(),
     taskData
   );
   return res;

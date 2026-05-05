@@ -1,20 +1,28 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { signupUser } from "../store/authslice.js";
-import { NavLink } from "react-router-dom";
+import { signupUser } from "@/features/auth/authSlice";
+import { NavLink, Navigate } from "react-router-dom";
+import { useAuth } from "@/features/auth/useAuth";
+
 function Signup() {
     const dispatch = useDispatch();
+    const { user, loading } = useAuth();
+
 
     const [form, setForm] = useState({
         email: "",
         password: "",
     });
 
+
+    if (loading) return null;
+    if (user) return <Navigate to="/" replace />;
+
+
     const handleSubmit = (e) => {
         console.log("button clicked");
         e.preventDefault();
 
-        // ✅ Basic validation
         if (!form.email.includes("@")) {
             alert("Invalid email");
             return;
@@ -57,8 +65,6 @@ function Signup() {
             </form>
             <NavLink to="/login" className="mt-4 text-blue-500 dark:text-blue-400">Already have an account? Login</NavLink>
         </div>
-
-
     );
 }
 

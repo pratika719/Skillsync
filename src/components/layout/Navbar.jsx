@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { logoutUser } from "../../store/authslice";
-import { useTheme } from "../../context/ThemeContext";    // ← ADD
+import { logoutUser } from "@/features/auth/authSlice";
+import { useTheme } from "@/context/ThemeContext";
 
 function Navbar() {
     const { theme, toggleTheme } = useTheme();            // ← REPLACE useState

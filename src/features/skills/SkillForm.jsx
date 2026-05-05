@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSkills } from "../../hooks/useSkills";
+import { useSkills } from "./useSkills";
 import toast from "react-hot-toast";
 
 function SkillForm() {

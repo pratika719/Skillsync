@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import SkillCard from "./SkillCard";
-import { useDebounce } from "../../hooks/useDebounce";
-import { useSkills } from "../../hooks/useSkills";
+import { useDebounce } from "@/hooks/useDebounce";
+import { useSkills } from "./useSkills";
+import SkeletonCard from "@/components/shared/SkeletonCard";
 function SkillList() {
   const { skills, loading } = useSkills();
   const [search, setSearch] = useState("");
@@ -19,7 +20,17 @@ function SkillList() {
       return s.status === statusFilter;
     }), [debouncedSearch, statusFilter, skills]);
 
-  if (loading) return <p className="text-gray-500">Loading skills...</p>;
+
+  // ... inside the component:
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        {[...Array(3)].map((_, i) => (
+          <SkeletonCard key={i} variant="skill" />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">

@@ -1,15 +1,9 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "./components/layout/Navbar";
-import Sidebar from "./components/layout/Sidebar";
-import { account } from "./appwrite/config.js";
-import { useEffect } from "react";
-import ErrorBoundary from "./components/shared/ErrorBoundary";
+import Navbar from "@/components/layout/Navbar";
+import Sidebar from "@/components/layout/Sidebar";
+import ErrorBoundary from "@/components/shared/ErrorBoundary";
 
 function App() {
-
-
-
-
   return (
     <div className="flex h-screen bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100">
       {/* Sidebar */}

@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import { useTasks } from "../../hooks/useTasks";
+import { useTasks } from "./useTasks";
 import TaskCard from "./TaskCard";
-import { useDebounce } from "../../hooks/useDebounce";
-
+import { useDebounce } from "@/hooks/useDebounce";
+import SkeletonCard from "@/components/shared/SkeletonCard";
 function TaskList() {
   const { tasks, skills, loading } = useTasks();
   const [search, setSearch] = useState("");
@@ -26,7 +26,17 @@ function TaskList() {
     [tasks, debouncedSearch, statusFilter, skillFilter]
   );
 
-  if (loading) return <p className="text-gray-500">Loading tasks...</p>;
+
+  // ... inside the component:
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        {[...Array(4)].map((_, i) => (
+          <SkeletonCard key={i} variant="task" />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">

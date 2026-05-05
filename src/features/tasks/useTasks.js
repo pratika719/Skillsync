@@ -1,7 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback } from "react";
-import { fetchTasks, addTask, editTaskAsync, deleteTaskAsync, toggleTaskAsync } from "../store/taskslice";
-import { selectAllTasks, selectAllSkills, selectUser } from "../store/selectors";
+import { fetchTasks, addTask, editTaskAsync, deleteTaskAsync, toggleTaskAsync } from "./taskSlice";
+import { selectAllTasks } from "./taskSelectors";
+import { selectAllSkills } from "@/features/skills/skillSelectors";
+import { selectUser } from "@/features/auth/authSelectors";
 
 export function useTasks() {
     const dispatch = useDispatch();
@@ -23,10 +25,5 @@ export function useTasks() {
     const removeTask = useCallback((id) => dispatch(deleteTaskAsync(id)).unwrap(), [dispatch])
     const editTask = useCallback((id, data) => dispatch(editTaskAsync({ id, data })).unwrap(), [dispatch])
 
-
-    return { tasks, loading, error, loadTasks, createTask, toggleTask, removeTask, loadTasks, skills, editTask };
-
-
-
+    return { tasks, loading, error, loadTasks, createTask, toggleTask, removeTask, skills, editTask };
 }
-

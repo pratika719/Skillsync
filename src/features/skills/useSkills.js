@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useCallback } from "react";
-import { fetchSkill, addSkill, editSkillAsync, deleteSkillAsync } from "../store/skillslice";
-import { selectAllSkills } from "../store/selectors";
+import { fetchSkill, addSkill, editSkillAsync, deleteSkillAsync } from "./skillSlice";
+import { selectAllSkills } from "./skillSelectors";
 
 export function useSkills() {
     const dispatch = useDispatch();
