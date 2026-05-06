@@ -12,7 +12,7 @@ class ErrorBoundary extends React.Component {
         return { hasError: true, error };
     }
 
-    componentsDidCatch(error, errorInfo) {
+    componentDidCatch(error, errorInfo) {
         console.log("Error caught by boundary", error, errorInfo);
         this.setState({ error, errorInfo });
     }
@@ -26,7 +26,7 @@ class ErrorBoundary extends React.Component {
         if (this.state.hasError) {
 
             if (this.props.fallback) {
-                return this.props.children;
+                return this.props.fallback;
             }
 
             // Default fallback UI — styled to match your dark theme

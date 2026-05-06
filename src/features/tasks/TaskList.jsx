@@ -1,8 +1,10 @@
 import { useMemo, useState } from "react";
 import { useTasks } from "./useTasks";
 import TaskCard from "./TaskCard";
+import { AnimatePresence } from "framer-motion";
 import { useDebounce } from "@/hooks/useDebounce";
 import SkeletonCard from "@/components/shared/SkeletonCard";
+
 function TaskList() {
   const { tasks, skills, loading } = useTasks();
   const [search, setSearch] = useState("");
@@ -26,8 +28,6 @@ function TaskList() {
     [tasks, debouncedSearch, statusFilter, skillFilter]
   );
 
-
-  // ... inside the component:
   if (loading) {
     return (
       <div className="space-y-4">
@@ -40,6 +40,7 @@ function TaskList() {
 
   return (
     <div className="space-y-4">
+      {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-2">
         <input
           value={search}
@@ -47,15 +48,25 @@ function TaskList() {
           placeholder="Search tasks..."
           className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded w-full placeholder-gray-400"
         />
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded">
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded"
+        >
           <option value="all">All Status</option>
           <option value="pending">Pending</option>
           <option value="completed">Completed</option>
         </select>
-        <select value={skillFilter} onChange={(e) => setSkillFilter(e.target.value)} className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded">
+        <select
+          value={skillFilter}
+          onChange={(e) => setSkillFilter(e.target.value)}
+          className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded"
+        >
           <option value="all">All Skills</option>
           <option value="none">No Skill</option>
-          {skills.map((s) => <option key={s.id} value={s.id}>{s.title}</option>)}
+          {skills.map((s) => (
+            <option key={s.id} value={s.id}>{s.title}</option>
+          ))}
         </select>
         {(search || statusFilter !== "all" || skillFilter !== "all") && (
           <button
@@ -66,10 +77,21 @@ function TaskList() {
           </button>
         )}
       </div>
-      <p className="text-xs text-gray-400">Showing {filtered.length} of {tasks.length} tasks</p>
+
+      <p className="text-xs text-gray-400">
+        Showing {filtered.length} of {tasks.length} tasks
+      </p>
+
+      {/* ✅ AnimatePresence enables exit animations on delete */}
       {filtered.length === 0
         ? <p className="text-gray-400 text-sm">No tasks match your filters.</p>
-        : filtered.map((task) => <TaskCard key={task.id} task={task} />)
+        : (
+          <AnimatePresence mode="popLayout">
+            {filtered.map((task) => (
+              <TaskCard key={task.id} task={task} />
+            ))}
+          </AnimatePresence>
+        )
       }
     </div>
   );

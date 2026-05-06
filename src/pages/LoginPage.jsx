@@ -1,34 +1,33 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { loginUser } from "@/features/auth/authSlice";
-import React from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "@/features/auth/useAuth";
 function Login() {
-  const { user, loading } = useAuth();
-
-  const dispatch = useDispatch();
+  const { user, loading, login } = useAuth();
   const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  useEffect(() => {
+    if (user) navigate("/");
+  }, [user, navigate]);
+
   if (loading) return null;
-  if (user) return navigate("/");
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await dispatch(loginUser({ email, password })).unwrap();
-
+      await login(email, password); // ✅ USE THIS
       toast.success("Login successful 🚀");
       navigate("/");
     } catch (err) {
       toast.error("Login failed ❌");
     }
   };
+
 
   return (
     <div className="flex h-screen justify-center items-center bg-gray-50 dark:bg-gray-950">

@@ -1,27 +1,23 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import SkillCard from "./SkillCard";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useSkills } from "./useSkills";
 import SkeletonCard from "@/components/shared/SkeletonCard";
+
 function SkillList() {
   const { skills, loading } = useSkills();
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 300);
   const [statusFilter, setStatusFilter] = useState("all");
 
+  const filtered = useMemo(() =>
+    skills
+      .filter((s) => s.title.toLowerCase().includes(debouncedSearch.toLowerCase()))
+      .filter((s) => statusFilter === "all" ? true : s.status === statusFilter),
+    [skills, debouncedSearch, statusFilter]
+  );
 
-
-  const filtered = useMemo(() => skills
-    .filter((s) =>
-      s.title.toLowerCase().includes(debouncedSearch.toLowerCase())
-    )
-    .filter((s) => {
-      if (statusFilter === "all") return true;
-      return s.status === statusFilter;
-    }), [debouncedSearch, statusFilter, skills]);
-
-
-  // ... inside the component:
   if (loading) {
     return (
       <div className="space-y-4">
@@ -34,11 +30,7 @@ function SkillList() {
 
   return (
     <div className="space-y-4">
-
-      {/* Search + Filters */}
       <div className="flex flex-col sm:flex-row gap-2">
-
-        {/* Search */}
         <input
           type="text"
           value={search}
@@ -46,8 +38,6 @@ function SkillList() {
           placeholder="Search skills..."
           className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded w-full placeholder-gray-400"
         />
-
-        {/* Status filter */}
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
@@ -58,14 +48,9 @@ function SkillList() {
           <option value="in_progress">In Progress</option>
           <option value="completed">Completed</option>
         </select>
-
-        {/* Clear filters */}
         {(search || statusFilter !== "all") && (
           <button
-            onClick={() => {
-              setSearch("");
-              setStatusFilter("all");
-            }}
+            onClick={() => { setSearch(""); setStatusFilter("all"); }}
             className="px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600 whitespace-nowrap"
           >
             Clear ✕
@@ -73,20 +58,20 @@ function SkillList() {
         )}
       </div>
 
-      {/* Results count */}
       <p className="text-xs text-gray-400">
         Showing {filtered.length} of {skills.length} skills
       </p>
 
-      {/* Skill list */}
+      {/* ✅ AnimatePresence enables exit animations on delete */}
       {filtered.length === 0 ? (
         <p className="text-gray-400 text-sm">No skills match your filters.</p>
       ) : (
-        filtered.map((skill) => (
-          <SkillCard key={skill.id} skill={skill} />
-        ))
+        <AnimatePresence mode="popLayout">
+          {filtered.map((skill) => (
+            <SkillCard key={skill.id} skill={skill} />
+          ))}
+        </AnimatePresence>
       )}
-
     </div>
   );
 }
