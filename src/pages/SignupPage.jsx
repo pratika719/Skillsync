@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signupUser } from "@/features/auth/authSlice";
 import { NavLink, Navigate } from "react-router-dom";
@@ -8,18 +8,15 @@ function Signup() {
     const dispatch = useDispatch();
     const { user, loading } = useAuth();
 
-
-    const [form, setForm] = useState({
+const [form, setForm] = useState({
         email: "",
         password: "",
     });
 
-
-    if (loading) return null;
+if (loading) return null;
     if (user) return <Navigate to="/" replace />;
 
-
-    const handleSubmit = (e) => {
+const handleSubmit = (e) => {
         console.log("button clicked");
         e.preventDefault();
 

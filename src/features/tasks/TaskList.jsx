@@ -1,12 +1,15 @@
-import { useMemo, useState } from "react";
-import { useTasks } from "./useTasks";
+﻿import { useMemo, useState } from "react";
+
 import TaskCard from "./TaskCard";
 import { AnimatePresence } from "framer-motion";
 import { useDebounce } from "@/hooks/useDebounce";
 import SkeletonCard from "@/components/shared/SkeletonCard";
+import { useTaskQuery } from "./useTaskQuery";
+import { useSkillQuery } from "../skills/useSkillQuery";
 
 function TaskList() {
-  const { tasks, skills, loading } = useTasks();
+  const { tasks, isLoading } = useTaskQuery();
+  const { skills } = useSkillQuery();
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 300);
   const [statusFilter, setStatusFilter] = useState("all");
@@ -28,7 +31,7 @@ function TaskList() {
     [tasks, debouncedSearch, statusFilter, skillFilter]
   );
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="space-y-4">
         {[...Array(4)].map((_, i) => (
@@ -40,7 +43,7 @@ function TaskList() {
 
   return (
     <div className="space-y-4">
-      {/* Filters */}
+      {}
       <div className="flex flex-col sm:flex-row gap-2">
         <input
           value={search}
@@ -82,7 +85,7 @@ function TaskList() {
         Showing {filtered.length} of {tasks.length} tasks
       </p>
 
-      {/* ✅ AnimatePresence enables exit animations on delete */}
+      {}
       {filtered.length === 0
         ? <p className="text-gray-400 text-sm">No tasks match your filters.</p>
         : (

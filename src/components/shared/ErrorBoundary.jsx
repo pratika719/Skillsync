@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -29,8 +29,7 @@ class ErrorBoundary extends React.Component {
                 return this.props.fallback;
             }
 
-            // Default fallback UI — styled to match your dark theme
-            return (
+return (
                 <div className="flex items-center justify-center min-h-screen bg-gray-950 text-gray-100">
                     <div className="text-center p-8 rounded-2xl bg-gray-900 border border-gray-800 max-w-md mx-4">
                         <div className="text-5xl mb-4">⚠️</div>
@@ -38,7 +37,7 @@ class ErrorBoundary extends React.Component {
                         <p className="text-gray-400 mb-6 text-sm">
                             An unexpected error occurred. Please try again.
                         </p>
-                        {/* Show error details in development only */}
+                        {}
                         {import.meta.env.DEV && this.state.error && (
                             <details className="mb-4 text-left text-xs text-red-400 bg-gray-800 p-3 rounded-lg overflow-auto max-h-40">
                                 <summary className="cursor-pointer mb-2 text-red-300">
@@ -72,6 +71,4 @@ class ErrorBoundary extends React.Component {
     }
 }
 export default ErrorBoundary;
-
-
 

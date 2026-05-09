@@ -1,7 +1,6 @@
-import React from 'react';
+﻿import React from 'react';
 import SkillForm from "@/features/skills/SkillForm";
 import SkillList from "@/features/skills/SkillList";
-import Modal from '../components/shared/Modal';
 
 function SkillsPage() {
   return (

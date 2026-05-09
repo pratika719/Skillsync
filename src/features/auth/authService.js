@@ -1,4 +1,4 @@
-import { account } from "@/lib/appwrite";
+﻿import { account } from "@/lib/appwrite";
 
 export const signup = async (email, password) => {
     try {
@@ -17,14 +17,13 @@ export const signup = async (email, password) => {
     }
 };
 
-// 🔐 LOGIN
 export const login = async (email, password) => {
     try {
-        // ✅ delete existing session first if one exists
+
         try {
             await account.deleteSession("current");
         } catch {
-            // no active session — that's fine, continue
+
         }
 
         await account.createEmailPasswordSession(email, password);
@@ -36,15 +35,13 @@ export const login = async (email, password) => {
     }
 };
 
-// 🔐 LOGOUT
 export const logout = async () => {
     return await account.deleteSession("current");
 };
 export const getCurrentUser = async () => {
     const user = await account.get();
 
-    // ✅ Return ONLY plain data
-    return {
+return {
         id: user.$id,
         name: user.name,
         email: user.email,

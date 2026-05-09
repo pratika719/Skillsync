@@ -1,16 +1,15 @@
-import { useEffect } from "react";
+﻿import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
 function Modal({ isOpen, onClose, title, message, onConfirm, confirmText = "Confirm", confirmStyle = "bg-red-500 hover:bg-red-600" }) {
-    // ✅ close on Escape key
+
     useEffect(() => {
         const handleKey = (e) => { if (e.key === "Escape") onClose(); };
         if (isOpen) window.addEventListener("keydown", handleKey);
         return () => window.removeEventListener("keydown", handleKey);
     }, [isOpen, onClose]);
 
-    // ✅ prevent background scroll when modal is open
-    useEffect(() => {
+useEffect(() => {
         document.body.style.overflow = isOpen ? "hidden" : "";
         return () => { document.body.style.overflow = ""; };
     }, [isOpen]);
@@ -23,16 +22,16 @@ function Modal({ isOpen, onClose, title, message, onConfirm, confirmText = "Conf
             aria-modal="true"
             role="dialog"
         >
-            {/* Backdrop */}
+            {}
             <div
                 className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                 onClick={onClose}
             />
 
-            {/* Modal box */}
+            {}
             <div className="relative z-10 bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 w-full max-w-sm mx-4">
 
-                {/* Header */}
+                {}
                 <div className="flex justify-between items-start mb-3">
                     <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
                         {title}
@@ -45,12 +44,12 @@ function Modal({ isOpen, onClose, title, message, onConfirm, confirmText = "Conf
                     </button>
                 </div>
 
-                {/* Message */}
+                {}
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
                     {message}
                 </p>
 
-                {/* Actions */}
+                {}
                 <div className="flex justify-end gap-3">
                     <button
                         onClick={onClose}
@@ -67,7 +66,7 @@ function Modal({ isOpen, onClose, title, message, onConfirm, confirmText = "Conf
                 </div>
             </div>
         </div>,
-        document.body // ✅ renders outside component tree via portal
+        document.body
     );
 }
 

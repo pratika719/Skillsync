@@ -1,6 +1,6 @@
-import { useSelector, useDispatch } from "react-redux";
+﻿import { useSelector, useDispatch } from "react-redux";
 import { useCallback } from "react";
-import { fetchSkill, addSkill, editSkillAsync, deleteSkillAsync } from "./skillSlice";
+
 import { selectAllSkills } from "./skillSelectors";
 
 export function useSkills() {
@@ -14,7 +14,7 @@ export function useSkills() {
         if (user) dispatch(fetchSkill(user.id))
     }, [dispatch, user])
 
-    const createSkill = useCallback((title) => 
+    const createSkill = useCallback((title) =>
         dispatch(addSkill({ title, status: "not_started", userId: user?.id })).unwrap()
     , [dispatch, user])
 

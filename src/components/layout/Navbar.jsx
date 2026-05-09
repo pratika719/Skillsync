@@ -1,9 +1,9 @@
-import { useDispatch } from "react-redux";
+﻿import { useDispatch } from "react-redux";
 import { logoutUser } from "@/features/auth/authSlice";
 import { useTheme } from "@/context/ThemeContext";
 
 function Navbar() {
-    const { theme, toggleTheme } = useTheme();            // ← REPLACE useState
+    const { theme, toggleTheme } = useTheme();
     const dispatch = useDispatch();
 
     return (
@@ -12,21 +12,21 @@ function Navbar() {
                 Dashboard
             </div>
 
-            {/* Right */}
+            {}
             <div className="flex items-center gap-4">
-                {/* Search */}
+                {}
                 <input
                     type="text"
                     placeholder="Search..."
                     className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm px-3 py-2 rounded-md outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
                 />
 
-                {/* Dark Mode Toggle — NOW FUNCTIONAL */}
+                {}
                 <button
-                    onClick={toggleTheme}                  // ← USE CONTEXT
+                    onClick={toggleTheme}
                     className="px-3 py-2 bg-gray-200 dark:bg-gray-800 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition"
                 >
-                    {theme === "dark" ? "☀️" : "🌙"}       {/* ← DYNAMIC ICON */}
+                    {theme === "dark" ? "☀️" : "🌙"}       {}
                 </button>
 
                 <button
@@ -36,7 +36,7 @@ function Navbar() {
                     Logout
                 </button>
 
-                {/* Profile */}
+                {}
                 <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center font-bold">
                     P
                 </div>

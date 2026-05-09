@@ -1,12 +1,12 @@
-import { memo, useCallback, useState } from "react";
+﻿import { memo, useCallback, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import toast from "react-hot-toast";
-import { useTasks } from "./useTasks";
+
 import { useModal } from "@/hooks/useModal";
 import Modal from "@/components/shared/Modal";
+import { useTaskQuery } from "./useTaskQuery";
 
 const TaskCard = memo(function TaskCard({ task }) {
-  const { toggleTask, removeTask, updateTask } = useTasks(); // ✅ correct names
+  const { toggleTask, removeTask, updateTask } = useTaskQuery();
   const { isOpen, openModal, closeModal } = useModal();
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(task.title);
@@ -16,29 +16,26 @@ const TaskCard = memo(function TaskCard({ task }) {
   const handleDeleteConfirm = useCallback(async () => {
     try {
       await removeTask(task.id);
-      toast.success("Task deleted 🗑️");
     } catch {
-      toast.error("Failed to delete task ❌");
+
     }
   }, [removeTask, task.id]);
 
   const handleEdit = async () => {
-    if (!newTitle.trim()) { toast.error("Title cannot be empty ❌"); return; }
+    if (!newTitle.trim()) return;
     try {
-      await updateTask(task.id, { title: newTitle }); // ✅ correct name
-      toast.success("Task updated ✏️");
+      await updateTask(task.id, { title: newTitle });
       setIsEditing(false);
     } catch {
-      toast.error("Failed to update task ❌");
+
     }
   };
 
   const handleToggle = useCallback(async () => {
     try {
       await toggleTask(task);
-      toast.success("Task updated ✅");
     } catch {
-      toast.error("Failed to update task ❌");
+
     }
   }, [toggleTask, task]);
 
@@ -58,7 +55,7 @@ const TaskCard = memo(function TaskCard({ task }) {
         whileTap={{ scale: 0.99 }}
         className="p-4 bg-white dark:bg-gray-800 shadow rounded flex justify-between items-center"
       >
-        {/* LEFT SIDE */}
+        {}
         <div className="flex-1">
           <AnimatePresence mode="wait">
             {isEditing ? (
@@ -88,10 +85,10 @@ const TaskCard = memo(function TaskCard({ task }) {
           </AnimatePresence>
         </div>
 
-        {/* RIGHT SIDE */}
+        {}
         <div className="flex gap-2 ml-4">
 
-          {/* Toggle */}
+          {}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -101,7 +98,7 @@ const TaskCard = memo(function TaskCard({ task }) {
             {task.completed ? "Undo" : "Done"}
           </motion.button>
 
-          {/* Edit / Save */}
+          {}
           <AnimatePresence mode="wait">
             {isEditing ? (
               <motion.button
@@ -132,7 +129,7 @@ const TaskCard = memo(function TaskCard({ task }) {
             )}
           </AnimatePresence>
 
-          {/* Delete */}
+          {}
           <motion.button
             whileHover={{ scale: 1.05, backgroundColor: "#dc2626" }}
             whileTap={{ scale: 0.95 }}

@@ -1,4 +1,4 @@
-import { createSelector } from "@reduxjs/toolkit";
+﻿import { createSelector } from "@reduxjs/toolkit";
 
 export const selectAllTasks = (state) => state.tasks.items;
 export const selectTasksLoading = (state) => state.tasks.loading;

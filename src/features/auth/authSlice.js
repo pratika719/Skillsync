@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+﻿import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { login, logout, getCurrentUser, signup } from "./authService";
 import toast from "react-hot-toast";
 
@@ -32,7 +32,6 @@ export const fetchUser = createAsyncThunk(
   }
 );
 
-
 export const logoutUser = createAsyncThunk(
   "auth/logoutUser",
   async () => {
@@ -59,7 +58,6 @@ export const signupUser = createAsyncThunk(
   }
 );
 
-
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -74,7 +72,7 @@ const authSlice = createSlice({
       })
       .addCase(fetchUser.rejected, (state, action) => {
         state.loading = false
-        state.error = action.error.message;
+        state.error = action.payload || action.error.message;
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.user = action.payload;
@@ -90,9 +88,16 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.error.message;
         state.loading = false;
+      })
+      .addCase(signupUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+      })
+      .addCase(signupUser.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loading = false;
       });
   }
 })
-
 
 export default authSlice.reducer;

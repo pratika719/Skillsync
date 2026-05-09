@@ -1,12 +1,12 @@
-import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import SkillCard from "./SkillCard";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useSkills } from "./useSkills";
 import SkeletonCard from "@/components/shared/SkeletonCard";
+import { useSkillQuery } from "./useSkillQuery";
 
 function SkillList() {
-  const { skills, loading } = useSkills();
+  const { skills, isLoading } = useSkillQuery();
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 300);
   const [statusFilter, setStatusFilter] = useState("all");
@@ -18,7 +18,7 @@ function SkillList() {
     [skills, debouncedSearch, statusFilter]
   );
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="space-y-4">
         {[...Array(3)].map((_, i) => (
@@ -62,7 +62,7 @@ function SkillList() {
         Showing {filtered.length} of {skills.length} skills
       </p>
 
-      {/* ✅ AnimatePresence enables exit animations on delete */}
+      {}
       {filtered.length === 0 ? (
         <p className="text-gray-400 text-sm">No skills match your filters.</p>
       ) : (

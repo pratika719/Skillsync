@@ -1,23 +1,26 @@
-import { useState } from "react";
-import { useTasks } from "./useTasks";
-import toast from "react-hot-toast";
+﻿import { useState } from "react";
 
+import toast from "react-hot-toast";
+import { useTaskQuery } from "./useTaskQuery";
+import { useSkillQuery } from "../skills/useSkillQuery";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/features/auth/authSelectors";
 
 function TaskForm() {
   const [text, setText] = useState("");
   const [skillId, setSkillId] = useState("");
-  const { createTask, skills } = useTasks();
+  const { createTask, isAdding } = useTaskQuery();
+  const { skills } = useSkillQuery();
+  const user = useSelector(selectUser);
 
-
-  const handleAdd = async () => {
+const handleAdd = async () => {
     if (!text.trim()) { toast.error("Task cannot be empty ❌"); return; }
     try {
-      await createTask(text, skillId || null);
-      toast.success("Task added ✅");
+      await createTask({ title: text, completed: false, userId: user?.id, skillId: skillId || null });
       setText("");
       setSkillId("");
     } catch {
-      toast.error("Failed to add task ❌");
+
     }
   };
 
@@ -27,20 +30,26 @@ function TaskForm() {
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Enter task..."
-        className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded w-full placeholder-gray-400"
+        disabled={isAdding}
+        className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded w-full placeholder-gray-400 disabled:opacity-50"
       />
       <select
         value={skillId}
         onChange={(e) => setSkillId(e.target.value)}
-        className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded"
+        disabled={isAdding}
+        className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded disabled:opacity-50"
       >
         <option value="">No skill</option>
         {skills.map((skill) => (
           <option key={skill.id} value={skill.id}>{skill.title}</option>
         ))}
       </select>
-      <button onClick={handleAdd} className="px-4 bg-green-500 text-white rounded">
-        Add
+      <button
+        onClick={handleAdd}
+        disabled={isAdding}
+        className="px-4 bg-green-500 text-white rounded disabled:bg-green-300 whitespace-nowrap"
+      >
+        {isAdding ? "Adding..." : "Add Task"}
       </button>
     </div>
   );

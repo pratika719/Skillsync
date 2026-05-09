@@ -1,5 +1,8 @@
-import { useSelector } from "react-redux";
+﻿import { useSelector } from "react-redux";
 import { memo, useMemo } from "react";
+import { useTaskQuery } from "@/features/tasks/useTaskQuery";
+import { useSkillQuery } from "@/features/skills/useSkillQuery";
+import { selectUser } from "@/features/auth/authSelectors";
 
 const StatCard = memo(function StatCard({ label, value, sub }) {
   return (
@@ -12,10 +15,9 @@ const StatCard = memo(function StatCard({ label, value, sub }) {
 });
 
 function DashboardPage() {
-  const tasks = useSelector((state) => state.tasks.items);
-  const skills = useSelector((state) => state.skills.items);
-  const user = useSelector((state) => state.auth.user);
-
+  const { tasks } = useTaskQuery();
+  const { skills } = useSkillQuery();
+  const user = useSelector(selectUser);
   const totalTasks = useMemo(() => tasks.length, [tasks]);
   const completedTasks = useMemo(() => tasks.filter((t) => t.completed).length, [tasks]);
   const pendingTasks = useMemo(() => totalTasks - completedTasks, [totalTasks, completedTasks]);
@@ -36,7 +38,7 @@ function DashboardPage() {
   return (
     <div className="p-6 space-y-8">
 
-      {/* Welcome */}
+      {}
       <div>
         <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
           Welcome back, {user?.email} 👋
@@ -46,7 +48,7 @@ function DashboardPage() {
         </p>
       </div>
 
-      {/* Task stat cards */}
+      {}
       <div>
         <h2 className="text-sm font-semibold text-gray-500 uppercase mb-3">
           Tasks Overview
@@ -70,7 +72,7 @@ function DashboardPage() {
         </div>
       </div>
 
-      {/* Tasks per skill breakdown */}
+      {}
       <div>
         <h2 className="text-sm font-semibold text-gray-500 uppercase mb-3">
           Tasks per Skill
@@ -87,13 +89,12 @@ function DashboardPage() {
                 <div className="flex justify-between items-center">
                   <p className="font-semibold text-gray-700 dark:text-gray-200">{skill.title}</p>
                   <span
-                    className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                      skill.status === "completed"
-                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                        : skill.status === "in_progress"
+                    className={`text-xs px-2 py-0.5 rounded-full font-medium ${skill.status === "completed"
+                      ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                      : skill.status === "in_progress"
                         ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
                         : "bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400"
-                    }`}
+                      }`}
                   >
                     {skill.status.replace("_", " ")}
                   </span>
@@ -109,7 +110,7 @@ function DashboardPage() {
         )}
       </div>
 
-      {/* Recent activity */}
+      {}
       <div>
         <h2 className="text-sm font-semibold text-gray-500 uppercase mb-3">
           Recent Activity
@@ -136,9 +137,8 @@ function DashboardPage() {
                       </span>
                     )}
                     <span
-                      className={`text-xs font-medium ${
-                        task.completed ? "text-green-500" : "text-yellow-500"
-                      }`}
+                      className={`text-xs font-medium ${task.completed ? "text-green-500" : "text-yellow-500"
+                        }`}
                     >
                       {task.completed ? "Completed" : "Pending"}
                     </span>

@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+﻿import { useSelector, useDispatch } from "react-redux";
 import { useCallback } from "react";
 import { loginUser, logoutUser, signupUser, fetchUser as fetchUserAction } from "./authSlice";
 
@@ -11,7 +11,7 @@ export function useAuth() {
       try {
         return await dispatch(loginUser({ email, password })).unwrap();
       } catch (err) {
-        // ✅ if session already active, delete it first then retry
+
         if (err?.code === 401) {
           await dispatch(logoutUser());
           return await dispatch(loginUser({ email, password })).unwrap();

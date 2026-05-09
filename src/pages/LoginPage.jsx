@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -20,7 +20,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      await login(email, password); // ✅ USE THIS
+      await login(email, password);
       toast.success("Login successful 🚀");
       navigate("/");
     } catch (err) {
@@ -28,8 +28,7 @@ function Login() {
     }
   };
 
-
-  return (
+return (
     <div className="flex h-screen justify-center items-center bg-gray-50 dark:bg-gray-950">
       <form onSubmit={onSubmit} className="p-6 bg-white dark:bg-gray-800 shadow rounded">
         <h2 className="text-xl mb-4 text-gray-800 dark:text-gray-100">Login</h2>
@@ -58,6 +57,5 @@ function Login() {
     </div>
   );
 }
-
 
 export default Login;

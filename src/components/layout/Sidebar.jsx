@@ -1,5 +1,4 @@
-import { NavLink } from "react-router-dom";
-
+﻿import { NavLink } from "react-router-dom";
 
 const navItems = [
     { name: "Dashboard", path: "/" },
@@ -11,12 +10,12 @@ function Sidebar() {
     return (
         <aside className="w-64 bg-gray-100 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col">
 
-            {/* Logo */}
+            {}
             <div className="p-6 text-2xl font-bold tracking-wide text-indigo-600 dark:text-indigo-400">
                 SkillSync
             </div>
 
-            {/* Nav Links */}
+            {}
             <nav className="flex-1 px-4 space-y-2">
                 {navItems.map((item) => (
                     <NavLink
@@ -34,7 +33,7 @@ function Sidebar() {
                 ))}
             </nav>
 
-            {/* Bottom section */}
+            {}
             <div className="p-4 border-t border-gray-200 dark:border-gray-800 text-sm text-gray-400 dark:text-gray-500">
                 © 2026 SkillSync
             </div>

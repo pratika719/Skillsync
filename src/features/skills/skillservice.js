@@ -1,4 +1,4 @@
-import { databases } from "../../lib/appwrite";
+﻿import { databases } from "@/lib/appwrite";
 import { Query, ID } from "appwrite";
 
 const DATABASE_ID = import.meta.env.VITE_APPWRITE_DATABASE_ID;
@@ -23,15 +23,12 @@ export const getSkills = async (userId) => {
   );
   return res.documents;
 
-
 }
-
 
 export const deleteSkill = async (skillId) => {
   await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, skillId);
   return skillId;
 };
-
 
 export const editSkill = async (skillId, data) => {
   const res = await databases.updateDocument(

@@ -1,11 +1,9 @@
-import { memo, useCallback } from "react";
+﻿import { memo, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useSkills } from "./useSkills";
+import { useSkillQuery } from "./useSkillQuery";
 import { useModal } from "@/hooks/useModal";
-import { useSelector } from "react-redux";
-import { selectTaskBySkill } from "@/features/tasks/taskSelectors";
+import { useTaskQuery } from "../tasks/useTaskQuery";
 import Modal from "@/components/shared/Modal";
-import toast from "react-hot-toast";
 
 const STATUS_OPTIONS = ["not_started", "in_progress", "completed"];
 const STATUS_STYLES = {
@@ -15,27 +13,26 @@ const STATUS_STYLES = {
 };
 
 const SkillCard = memo(function SkillCard({ skill }) {
-  const { updateSkill, removeSkill } = useSkills();
+  const { updateSkill, removeSkill } = useSkillQuery();
+  const { tasks } = useTaskQuery();
   const { isOpen, openModal, closeModal } = useModal();
-  const linkedTasks = useSelector(selectTaskBySkill(skill.id));
+  const linkedTasks = useMemo(() => tasks.filter(t => t.skillId === skill.id), [tasks, skill.id]);
 
   const handleDeleteClick = useCallback(() => openModal(), [openModal]);
 
   const handleDeleteConfirm = useCallback(async () => {
     try {
       await removeSkill(skill.id);
-      toast.success("Skill deleted 🗑️");
     } catch {
-      toast.error("Failed to delete skill ❌");
+
     }
   }, [removeSkill, skill.id]);
 
   const handleStatusChange = useCallback(async (e) => {
     try {
       await updateSkill(skill.id, { status: e.target.value });
-      toast.success("Status updated ✅");
     } catch {
-      toast.error("Failed to update status ❌");
+
     }
   }, [updateSkill, skill.id]);
 
@@ -80,7 +77,7 @@ const SkillCard = memo(function SkillCard({ skill }) {
           </div>
         </div>
 
-        {/* Linked tasks with staggered entry */}
+        {}
         <div className="mt-2">
           <p className="text-xs text-gray-400 mb-1">
             Linked tasks ({linkedTasks.length})

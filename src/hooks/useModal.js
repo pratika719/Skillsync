@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react"
+﻿import { useState, useCallback } from "react"
 
 export function useModal() {
     const [isOpen, setisOpen] = useState(false)
@@ -13,8 +13,6 @@ export function useModal() {
         setModalData(null);
     }, [])
 
-
-
-    return { isOpen, modalData, openModal, closeModal }
+return { isOpen, modalData, openModal, closeModal }
 
 }

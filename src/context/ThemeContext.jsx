@@ -1,23 +1,21 @@
-import { createContext, useContext, useState, useEffect } from "react";
+﻿import { createContext, useContext, useState, useEffect } from "react";
 
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-    // Initialize from localStorage, fallback to system preference, then default to "dark"
+
     const [theme, setTheme] = useState(() => {
         const saved = localStorage.getItem("skillsync-theme");
         if (saved) return saved;
 
-        // Respect OS-level preference
-        if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+if (window.matchMedia("(prefers-color-scheme: light)").matches) {
             return "light";
         }
         return "dark";
     });
 
-    // Sync the `dark` class on <html> whenever theme changes
-    useEffect(() => {
-        const root = document.documentElement; // <html> element
+useEffect(() => {
+        const root = document.documentElement;
         if (theme === "dark") {
             root.classList.add("dark");
         } else {
@@ -37,7 +35,6 @@ export function ThemeProvider({ children }) {
     );
 }
 
-// Custom hook for consuming the context
 export function useTheme() {
     const context = useContext(ThemeContext);
     if (!context) {
