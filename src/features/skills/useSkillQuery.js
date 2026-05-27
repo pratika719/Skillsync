@@ -26,7 +26,8 @@ const { data: skills = [], isLoading, isError } = useQuery({
                 userId: doc.userId,
             })),
     });
-
+//wht it does is first canclequeries stops any further fetching thenprevious var takes cache data
+//generate temp id and update cache
 const addMutation = useMutation({
         mutationFn: (skillData) => createSkill(skillData),
         onMutate: async (skillData) => {
@@ -40,7 +41,7 @@ const addMutation = useMutation({
                 status: "not_started",
                 userId: skillData.userId,
             };
-
+//
 queryClient.setQueryData(key, (old = []) => [...old, tempSkill]);
             return { previous, tempId };
         },

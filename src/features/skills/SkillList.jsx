@@ -4,7 +4,8 @@ import SkillCard from "./SkillCard";
 import { useDebounce } from "@/hooks/useDebounce";
 import SkeletonCard from "@/components/shared/SkeletonCard";
 import { useSkillQuery } from "./useSkillQuery";
-
+//debouncing for skillnsearch to reduce api calls
+//usemeo for storring filter results filter runs again if change in skilllist etc
 function SkillList() {
   const { skills, isLoading } = useSkillQuery();
   const [search, setSearch] = useState("");

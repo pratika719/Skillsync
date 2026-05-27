@@ -23,7 +23,7 @@ export const login = async (email, password) => {
         try {
             await account.deleteSession("current");
         } catch {
-
+            console.debug("No session to delete");
         }
 
         await account.createEmailPasswordSession(email, password);

@@ -4,20 +4,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useModal } from "@/hooks/useModal";
 import Modal from "@/components/shared/Modal";
 import { useTaskQuery } from "./useTaskQuery";
+import { useSkillQuery } from "../skills/useSkillQuery";
 
 const TaskCard = memo(function TaskCard({ task }) {
   const { toggleTask, removeTask, updateTask } = useTaskQuery();
+  const { skills } = useSkillQuery();
   const { isOpen, openModal, closeModal } = useModal();
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(task.title);
+
+  const skill = skills.find((s) => s.id === task.skillId);
 
   const handleDeleteClick = useCallback(() => openModal(), [openModal]);
 
   const handleDeleteConfirm = useCallback(async () => {
     try {
       await removeTask(task.id);
-    } catch {
-
+    } catch (err) {
+      console.error("Delete task error:", err);
     }
   }, [removeTask, task.id]);
 
@@ -26,16 +30,16 @@ const TaskCard = memo(function TaskCard({ task }) {
     try {
       await updateTask(task.id, { title: newTitle });
       setIsEditing(false);
-    } catch {
-
+    } catch (err) {
+      console.error("Edit task error:", err);
     }
   };
 
   const handleToggle = useCallback(async () => {
     try {
       await toggleTask(task);
-    } catch {
-
+    } catch (err) {
+      console.error("Toggle task error:", err);
     }
   }, [toggleTask, task]);
 
@@ -80,6 +84,11 @@ const TaskCard = memo(function TaskCard({ task }) {
                 className="font-semibold text-gray-800 dark:text-gray-100"
               >
                 {task.completed ? "✅ " : ""}{task.title}
+                {skill && (
+                  <span className="ml-2 text-[10px] bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 px-1.5 py-0.5 rounded-full uppercase tracking-wider font-bold">
+                    {skill.title}
+                  </span>
+                )}
               </motion.h3>
             )}
           </AnimatePresence>

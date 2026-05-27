@@ -21,12 +21,12 @@ const handleSubmit = (e) => {
         e.preventDefault();
 
         if (!form.email.includes("@")) {
-            alert("Invalid email");
+            toast.error("Invalid email");
             return;
         }
 
         if (form.password.length < 6) {
-            alert("Password must be 6+ chars");
+            toast.error("Password must be 6+ chars");
             return;
         }
 

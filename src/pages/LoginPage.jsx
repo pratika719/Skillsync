@@ -23,7 +23,8 @@ function Login() {
       await login(email, password);
       toast.success("Login successful 🚀");
       navigate("/");
-    } catch (err) {
+    } catch (error) {
+      console.error("Login error:", error);
       toast.error("Login failed ❌");
     }
   };

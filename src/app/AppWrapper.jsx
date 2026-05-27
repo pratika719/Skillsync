@@ -13,11 +13,11 @@ const TasksPage = lazy(() => import("@/pages/TasksPage"));
 const SkillsPage = lazy(() => import("@/pages/SkillsPage"));
 
 function AppWrapper() {
-    const { user, loading, restoreSession } = useAuth();
+    const { restoreSession } = useAuth();
 
 useEffect(() => {
         restoreSession();
-    }, []);
+    }, [restoreSession]);
 
 return (
         <Suspense fallback={<p className="p-6 text-gray-400">Loading...</p>}>

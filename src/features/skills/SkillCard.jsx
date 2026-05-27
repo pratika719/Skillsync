@@ -23,16 +23,16 @@ const SkillCard = memo(function SkillCard({ skill }) {
   const handleDeleteConfirm = useCallback(async () => {
     try {
       await removeSkill(skill.id);
-    } catch {
-
+    } catch (err) {
+      console.error("Delete skill error:", err);
     }
   }, [removeSkill, skill.id]);
 
   const handleStatusChange = useCallback(async (e) => {
     try {
       await updateSkill(skill.id, { status: e.target.value });
-    } catch {
-
+    } catch (err) {
+      console.error("Update skill status error:", err);
     }
   }, [updateSkill, skill.id]);
 

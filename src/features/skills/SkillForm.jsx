@@ -14,8 +14,8 @@ function SkillForm() {
     try {
       await createSkill({ title, status: "not_started", userId: user?.id });
       setTitle("");
-    } catch {
-
+    } catch (err) {
+      console.error("Create skill error:", err);
     }
   };
 

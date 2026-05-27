@@ -1,7 +1,9 @@
 ﻿import { useSelector, useDispatch } from "react-redux";
 import { useCallback } from "react";
 import { loginUser, logoutUser, signupUser, fetchUser as fetchUserAction } from "./authSlice";
-
+//usecallback is used for memoization and caching like caches a function so that i dont have to rerender it everytime on reload
+//usememo stores the result of the function itself
+//debouncing delays execution of a funcction untill a time period like api call while typing
 export function useAuth() {
   const dispatch = useDispatch();
   const { user, loading, error } = useSelector((state) => state.auth);

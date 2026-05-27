@@ -19,8 +19,8 @@ const handleAdd = async () => {
       await createTask({ title: text, completed: false, userId: user?.id, skillId: skillId || null });
       setText("");
       setSkillId("");
-    } catch {
-
+    } catch (err) {
+      console.error("Create task error:", err);
     }
   };
 

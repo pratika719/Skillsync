@@ -67,7 +67,7 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUser.pending, (state, action) => {
+      .addCase(fetchUser.pending, (state) => {
         state.loading = true
       })
       .addCase(fetchUser.rejected, (state, action) => {
@@ -101,3 +101,5 @@ const authSlice = createSlice({
 })
 
 export default authSlice.reducer;
+
+//useer clicks login action is dispatched to first useauth which calls authslice which handles async and updates global state for states extrareducers the actual service layer talks with appwrite to provide data
